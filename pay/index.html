@@ -417,6 +417,12 @@
         label: session.applePay.label,
         validate_merchant_url: session.applePay.validateMerchantUrl
       };
+      // supported_countries is an APPLE PAY field, not a top-level one. It
+      // limits which countries' cards the Apple Pay sheet accepts and has no
+      // bearing on a typed card, so it goes here and nowhere else.
+      if (session.applePay.supportedCountries && session.applePay.supportedCountries.length) {
+        config.apple_pay.supported_countries = session.applePay.supportedCountries;
+      }
     }
 
     Moyasar.init(config);
