@@ -1,0 +1,61 @@
+<!doctype html>
+<!--
+  WHY THIS PAGE IS DELIBERATELY ALMOST EMPTY
+  ========================================================================
+  Moyasar sends the member here after 3-D Secure with ?id, ?status and ?message
+  appended. Every one of those is attacker-editable — the member controls the
+  URL bar in the returning browser — and only ?id is even guaranteed to be
+  present. So this page forwards NOTHING except our own opaque session token.
+
+  The deep link is a UI hint that tells the app "the browser is done, start
+  polling". It is not proof of payment: the subscription is activated only by
+  the server-side webhook or the reconciler re-fetch against the secret key.
+  Forwarding status=paid here would hand a member a free subscription.
+
+  CSP NOTE: the inline script below is allowlisted in ../../vercel.json by its
+  sha256 hash. Editing it without regenerating the hash breaks the return leg.
+-->
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex, nofollow">
+<title>جارٍ العودة إلى التطبيق…</title>
+<style>
+  @font-face{ font-family:'Tajawal'; src:url('../../assets/fonts/Tajawal-Bold.ttf') format('truetype'); font-weight:700; font-display:swap; }
+  :root{ --bg:#03141A; --line-2:#22525a; --teal:#4FD6C6; --ink:#F1FAF8; --ink-2:#9FC2BF; --ink-dark:#03141A; }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ font-family:'Tajawal',-apple-system,'Segoe UI',system-ui,sans-serif; background:var(--bg); color:var(--ink); min-height:100dvh; display:flex; align-items:center; justify-content:center; padding:24px; text-align:center; }
+  .spinner{ width:40px; height:40px; margin:0 auto 18px; border-radius:50%; border:3px solid var(--line-2); border-top-color:var(--teal); animation:spin .85s linear infinite; }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+  @media(prefers-reduced-motion:reduce){ .spinner{ animation-duration:2.4s; } }
+  h1{ font-size:19px; font-weight:700; }
+  p{ color:var(--ink-2); font-size:14.5px; margin-top:8px; }
+  a.btn{ display:inline-flex; margin-top:20px; padding:13px 26px; border-radius:999px; background:var(--teal); color:var(--ink-dark); font-weight:700; font-size:15px; text-decoration:none; }
+</style>
+</head>
+<body>
+<div>
+  <div class="spinner"></div>
+  <h1>جارٍ العودة إلى التطبيق…</h1>
+  <p>لا تُغلق هذه النافذة، سنعيدك خلال لحظات.</p>
+  <noscript><p>يرجى تفعيل JavaScript، أو استخدم الزر أدناه للعودة.</p></noscript>
+  <a class="btn" id="back" href="goldentalent://payment-return" hidden>العودة إلى التطبيق</a>
+</div>
+<script>
+(function () {
+  'use strict';
+  var t = new URLSearchParams(window.location.search).get('t') || '';
+  if (!/^[A-Za-z0-9_-]{16,256}$/.test(t)) { t = ''; }
+  var url = 'goldentalent://payment-return' + (t ? '?t=' + encodeURIComponent(t) : '');
+  var back = document.getElementById('back');
+  back.href = url;
+  // replace(), not assign(): the member must not be able to press Back into a
+  // spent checkout session.
+  window.location.replace(url);
+  setTimeout(function () { back.hidden = false; }, 1500);
+})();
+</script>
+</body>
+</html>

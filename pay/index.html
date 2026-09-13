@@ -1,0 +1,437 @@
+<!doctype html>
+<!--
+  WHY THIS PAGE EXISTS AND WHY IT LOOKS LIKE THIS
+  ========================================================================
+  Card data must never touch the Expo binary. If it did, the app store build
+  would be in PCI-DSS scope and every OTA update would become a cardholder-data
+  change. So the member is handed off to this page on the merchant's own origin,
+  where Moyasar's hosted JS form (mpf) collects the PAN inside iframes it owns
+  and mints a single-use token straight to api.moyasar.com. Nothing here ever
+  reads a card number.
+
+  Everything this page renders comes from the payment-session edge function,
+  never from the URL. The URL carries exactly one thing: an opaque session token
+  (?t). The amount in particular is READ FROM THE API, because an amount taken
+  from the query string is an amount the member can edit before paying.
+
+  The session response deliberately contains no member PII, no subscription id
+  and no JWT: this URL travels through an external browser, a bank's 3-D Secure
+  redirect, and browser history. Treat ?t as a bearer credential — hence
+  <meta name="referrer" content="no-referrer">, and Cache-Control: no-store from
+  vercel.json.
+
+  Nothing on this page activates anything. Paying here is not proof of payment;
+  the subscription is activated only by the server-side webhook or the
+  reconciler re-fetch. So no copy here claims an activation — and none promises a
+  push notification either, because nothing in the confirmation path sends one.
+  The app was rejected twice by Google Play for Misleading Claims.
+
+  CSP NOTE: the inline <script> at the bottom of this file is allowlisted in
+  ../vercel.json by its sha256 hash, not by 'unsafe-inline' — an XSS on the
+  merchant origin that serves a card form is a card-skimming vector. IF YOU EDIT
+  THAT SCRIPT YOU MUST REGENERATE THE HASH, or the page will silently refuse to
+  run. Regenerate a hash from apps/web (swap the path for the other /pay pages):
+    node -e "const c=require('crypto'),f=require('fs').readFileSync('pay/index.html','utf8'),o='<'+'script>',e='</'+'script>';console.log('sha256-'+c.createHash('sha256').update(f.slice(f.lastIndexOf(o)+o.length,f.lastIndexOf(e))).digest('base64'))"
+  then paste it into the script-src list in vercel.json.
+-->
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex, nofollow">
+<title>إتمام الدفع — أكاديمية Golden Talent</title>
+<link rel="icon" href="../assets/favicon.png">
+<script src="https://cdn.moyasar.com/mpf/1.14.0/moyasar.js"></script>
+<link rel="stylesheet" href="https://cdn.moyasar.com/mpf/1.14.0/moyasar.css">
+<style>
+  @font-face{ font-family:'Tajawal'; src:url('../assets/fonts/Tajawal-Regular.ttf') format('truetype'); font-weight:400; font-display:swap; }
+  @font-face{ font-family:'Tajawal'; src:url('../assets/fonts/Tajawal-Medium.ttf') format('truetype'); font-weight:500; font-display:swap; }
+  @font-face{ font-family:'Tajawal'; src:url('../assets/fonts/Tajawal-Bold.ttf') format('truetype'); font-weight:700; font-display:swap; }
+  @font-face{ font-family:'Tajawal'; src:url('../assets/fonts/Tajawal-ExtraBold.ttf') format('truetype'); font-weight:800; font-display:swap; }
+
+  /* same custom properties as the marketing site — this must read as one product */
+  :root{
+    --bg:#03141A; --bg-2:#05191f; --surface:#0a2228; --surface-2:#0e2a31; --line:#173a41; --line-2:#22525a;
+    --teal:#4FD6C6; --teal-2:#37b3a4; --teal-dim:rgba(79,214,198,0.12); --cream:#F6DFBF; --clay:#E68A6A;
+    --ink:#F1FAF8; --ink-2:#9FC2BF; --ink-3:#5f8480; --ink-dark:#03141A;
+    --r:20px; --r-sm:14px; --pill:999px;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ font-family:'Tajawal','SF Pro Display',-apple-system,'Segoe UI',system-ui,sans-serif; background:var(--bg); color:var(--ink); line-height:1.75; -webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(900px 480px at 50% -8%, rgba(79,214,198,0.10), transparent 62%); background-repeat:no-repeat; min-height:100dvh; }
+  img{ max-width:100%; display:block; }
+  a{ color:inherit; text-decoration:none; }
+
+  .shell{ max-width:520px; margin-inline:auto; padding:clamp(18px,4vw,30px) clamp(16px,4vw,22px) 56px; }
+
+  /* brand line */
+  .brand{ display:flex; align-items:center; justify-content:center; gap:11px; padding-block:6px 22px; }
+  .brand img{ width:40px; height:40px; object-fit:contain; }
+  .brand b{ font-size:17px; font-weight:800; letter-spacing:-0.01em; }
+
+  .card{ background:var(--surface); border:1px solid var(--line); border-radius:var(--r); padding:clamp(20px,5vw,28px); }
+  .card + .card{ margin-top:16px; }
+
+  /* order summary */
+  .sum .tag{ display:inline-flex; align-items:center; gap:7px; font-size:12px; font-weight:800; color:var(--teal); background:var(--teal-dim); border:1px solid rgba(79,214,198,0.3); border-radius:var(--pill); padding:5px 13px; }
+  .sum .tag .dot{ width:6px; height:6px; border-radius:50%; background:var(--teal); box-shadow:0 0 10px var(--teal); }
+  .sum h1{ font-size:clamp(21px,4.4vw,25px); font-weight:800; line-height:1.3; margin-top:14px; letter-spacing:-0.01em; }
+  .sum .desc{ color:var(--ink-2); font-size:14.5px; margin-top:6px; }
+  .amount{ display:flex; align-items:baseline; gap:9px; margin-top:18px; padding-top:18px; border-top:1px solid var(--line); }
+  .amount .lbl{ color:var(--ink-3); font-size:13.5px; }
+  .amount b{ font-size:clamp(34px,8vw,44px); font-weight:800; line-height:1; letter-spacing:-0.02em; margin-inline-start:auto; }
+  .amount .cur{ font-size:15px; color:var(--ink-2); font-weight:700; }
+  .vat{ color:var(--ink-3); font-size:12.5px; margin-top:9px; }
+
+  /* networks */
+  .nets{ display:flex; align-items:center; gap:8px; margin-top:16px; flex-wrap:wrap; }
+  .net{ font-size:11.5px; font-weight:800; letter-spacing:.02em; color:var(--ink-2); background:rgba(255,255,255,0.04); border:1px solid var(--line-2); border-radius:8px; padding:5px 11px; }
+  .secure{ display:flex; align-items:center; gap:8px; color:var(--ink-3); font-size:12.5px; margin-top:14px; }
+  .secure svg{ width:15px; height:15px; stroke:var(--teal); stroke-width:2; fill:none; flex:none; }
+
+  /* states */
+  [hidden]{ display:none !important; }
+  .state{ text-align:center; padding-block:22px; }
+  .state h2{ font-size:19px; font-weight:800; }
+  .state p{ color:var(--ink-2); font-size:14.5px; margin-top:8px; }
+  .spinner{ width:38px; height:38px; margin:0 auto 16px; border-radius:50%; border:3px solid var(--line-2); border-top-color:var(--teal); animation:spin .85s linear infinite; }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+  @media(prefers-reduced-motion:reduce){ .spinner{ animation-duration:2.4s; } }
+
+  .btn{ display:inline-flex; align-items:center; justify-content:center; gap:9px; padding:14px 26px; border-radius:var(--pill); font-weight:700; font-size:15.5px; font-family:inherit; border:1px solid transparent; cursor:pointer; transition:transform .18s cubic-bezier(.16,1,.3,1), box-shadow .18s, background .18s; }
+  .btn-primary{ background:var(--teal); color:var(--ink-dark); box-shadow:0 10px 30px -8px rgba(79,214,198,0.5); }
+  .btn-primary:hover{ transform:translateY(-2px); }
+  .btn-ghost{ background:rgba(255,255,255,0.04); color:var(--ink); border-color:var(--line-2); }
+  .btn-ghost:hover{ background:rgba(255,255,255,0.09); }
+  .state .btn{ margin-top:18px; }
+
+  /* inline alert (gateway rejection, network hiccup) */
+  .alert{ display:flex; gap:11px; align-items:flex-start; background:rgba(230,138,106,0.10); border:1px solid rgba(230,138,106,0.42); border-radius:var(--r-sm); padding:14px 16px; margin-bottom:16px; }
+  .alert svg{ width:19px; height:19px; stroke:var(--clay); stroke-width:2; fill:none; flex:none; margin-top:3px; }
+  .alert b{ display:block; font-size:14.5px; color:var(--cream); }
+  .alert span{ display:block; font-size:13.5px; color:var(--ink-2); margin-top:2px; }
+
+  /* Moyasar hosted form, re-skinned onto the dark palette. mpf ships a light
+     theme; without this the card fields would look like a phishing page. */
+  .mysr-form{ margin-top:4px; }
+  .mysr-form .form-label, .mysr-form label{ color:var(--ink-2) !important; font-size:13.5px !important; font-weight:700 !important; }
+  .mysr-form input, .mysr-form select, .mysr-form .form-control{
+    background:var(--bg-2) !important; color:var(--ink) !important;
+    border:1px solid var(--line-2) !important; border-radius:var(--r-sm) !important;
+    font-family:inherit !important; font-size:16px !important; padding:13px 14px !important; box-shadow:none !important; }
+  .mysr-form input::placeholder{ color:var(--ink-3) !important; }
+  .mysr-form input:focus, .mysr-form select:focus, .mysr-form .form-control:focus{
+    border-color:var(--teal) !important; outline:none !important; box-shadow:0 0 0 3px var(--teal-dim) !important; }
+  .mysr-form button, .mysr-form .btn, .mysr-form input[type="submit"]{
+    background:var(--teal) !important; color:var(--ink-dark) !important; border:0 !important;
+    border-radius:var(--pill) !important; font-family:inherit !important; font-weight:800 !important;
+    font-size:16px !important; padding:15px 26px !important; width:100% !important; cursor:pointer;
+    box-shadow:0 10px 30px -8px rgba(79,214,198,0.5) !important; }
+  .mysr-form button:disabled{ opacity:.55 !important; cursor:progress; }
+  .mysr-form .invalid-feedback, .mysr-form .text-danger, .mysr-form .error{ color:var(--clay) !important; font-size:13px !important; }
+  .mysr-form .is-invalid{ border-color:var(--clay) !important; }
+
+  /* legal footer — Moyasar Terms, Article Five: the terms and the refund policy
+     must be disclosed to the payer BEFORE the transaction completes. */
+  .legal{ margin-top:20px; text-align:center; color:var(--ink-3); font-size:12.5px; line-height:1.9; }
+  .legal a{ color:var(--ink-2); border-bottom:1px solid var(--line-2); padding-bottom:1px; }
+  .legal a:hover{ color:var(--teal); border-color:var(--teal); }
+  .legal .sep{ opacity:.5; margin-inline:8px; }
+  .legal .by{ margin-top:10px; }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <a class="brand" href="/"><img src="../assets/crest.png" alt="Golden Talent"><b>Golden Talent</b></a>
+
+  <!-- 1. loading the session -->
+  <div class="card" id="stateLoading">
+    <div class="state">
+      <div class="spinner"></div>
+      <h2>جارٍ تجهيز صفحة الدفع</h2>
+      <p>لحظات من فضلك…</p>
+    </div>
+  </div>
+
+  <!-- 2. the session could not be loaded (network / server down) — retryable -->
+  <div class="card" id="stateNetwork" hidden>
+    <div class="state">
+      <h2>تعذّر الاتصال</h2>
+      <p>لم نتمكّن من تحميل بيانات الدفع. تأكّد من اتصالك بالإنترنت ثم أعد المحاولة.</p>
+      <button class="btn btn-primary" id="retryBtn" type="button">إعادة المحاولة</button>
+    </div>
+  </div>
+
+  <!-- 3. the checkout itself -->
+  <div id="stateReady" hidden>
+    <div class="card sum">
+      <span class="tag"><span class="dot"></span>طلب دفع</span>
+      <h1 id="pkgName">—</h1>
+      <p class="desc" id="pkgDesc"></p>
+      <div class="amount">
+        <span class="lbl">المبلغ المستحق</span>
+        <b id="amtValue">—</b><span class="cur" id="amtCur">ر.س</span>
+      </div>
+      <p class="vat">السعر شامل ضريبة القيمة المضافة.</p>
+      <div class="nets">
+        <span class="net">mada</span><span class="net">VISA</span><span class="net">Mastercard</span>
+      </div>
+      <div class="secure">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+        <span>دفع آمن عبر بوابة ميسر المرخّصة — بيانات بطاقتك لا تمرّ عبر خوادمنا.</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="alert" id="payAlert" hidden>
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+        <div>
+          <b id="payAlertTitle">لم تكتمل عملية الدفع</b>
+          <span id="payAlertBody">لم يتم خصم أي مبلغ. يمكنك المحاولة مرة أخرى ببطاقة أخرى.</span>
+        </div>
+      </div>
+      <div class="mysr-form"></div>
+    </div>
+
+    <p class="legal">
+      بإتمام الدفع أنت توافق على
+      <a href="/terms" target="_blank" rel="noopener">الشروط والأحكام</a>
+      <span class="sep">·</span>
+      <a href="/terms#refunds" target="_blank" rel="noopener">سياسة الاسترداد والإلغاء</a>
+      <span class="sep">·</span>
+      <a href="/privacy" target="_blank" rel="noopener">سياسة الخصوصية</a>
+      <span class="by">تُعالَج المدفوعات بواسطة ميسر (Moyasar) — بوابة دفع سعودية مرخّصة.</span>
+    </p>
+  </div>
+
+  <noscript>
+    <div class="card">
+      <div class="state">
+        <h2>جافاسكربت مطلوبة</h2>
+        <p>صفحة الدفع تحتاج إلى تفعيل JavaScript في متصفحك لإتمام العملية بشكل آمن.</p>
+      </div>
+    </div>
+  </noscript>
+
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  // The public payment-session / payment-attach functions live here. This is a
+  // hardcoded constant rather than a query parameter on purpose: an API origin
+  // that the URL can override lets an attacker point the checkout at their own
+  // server and read back a forged amount.
+  var FUNCTIONS_BASE = 'https://xrrxuvyztkmofpdbewwv.supabase.co/functions/v1';
+
+  var els = {
+    loading: document.getElementById('stateLoading'),
+    network: document.getElementById('stateNetwork'),
+    ready: document.getElementById('stateReady'),
+    retry: document.getElementById('retryBtn'),
+    pkgName: document.getElementById('pkgName'),
+    pkgDesc: document.getElementById('pkgDesc'),
+    amtValue: document.getElementById('amtValue'),
+    amtCur: document.getElementById('amtCur'),
+    alert: document.getElementById('payAlert'),
+    alertTitle: document.getElementById('payAlertTitle'),
+    alertBody: document.getElementById('payAlertBody')
+  };
+
+  function show(el) {
+    els.loading.hidden = el !== els.loading;
+    els.network.hidden = el !== els.network;
+    els.ready.hidden = el !== els.ready;
+  }
+
+  // A bad or expired token is terminal — there is nothing the member can do on
+  // this page, so the copy for it lives in one place instead of being duplicated
+  // into every branch that can reach it.
+  function terminal(reason) {
+    window.location.replace('/pay/expired.html?r=' + encodeURIComponent(reason));
+  }
+
+  function alertPayment(title, body) {
+    els.alertTitle.textContent = title;
+    els.alertBody.textContent = body;
+    els.alert.hidden = false;
+    els.alert.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  }
+
+  // ?t is an opaque base64url session token. Anything else is not ours, and
+  // must never be forwarded to the API or echoed back into the DOM.
+  function readToken() {
+    var t = new URLSearchParams(window.location.search).get('t') || '';
+    return /^[A-Za-z0-9_-]{16,256}$/.test(t) ? t : null;
+  }
+
+  function formatAmount(session) {
+    if (typeof session.amountFormatted === 'string' && session.amountFormatted) {
+      return session.amountFormatted;
+    }
+    // Fallback only. Halalas are integers; never divide into a float we then
+    // round for display, always fix to two decimals.
+    return (session.amountHalalas / 100).toFixed(2);
+  }
+
+  function loadSession(token) {
+    show(els.loading);
+    return fetch(FUNCTIONS_BASE + '/payment-session?t=' + encodeURIComponent(token), {
+      method: 'GET',
+      credentials: 'omit',
+      cache: 'no-store',
+      headers: { accept: 'application/json' }
+    }).then(function (res) {
+      if (res.status === 404) { terminal('unknown'); return null; }
+      // 409 is NOT 'expired'. The payment behind this token has already moved on
+      // — in practice because it was paid — so the member must never be sent to
+      // a page that tells them nothing was charged and invites a second attempt.
+      if (res.status === 409) { terminal('settled'); return null; }
+      if (res.status === 410) { terminal('expired'); return null; }
+      if (!res.ok) { throw new Error('session_http_' + res.status); }
+      return res.json();
+    });
+  }
+
+  // Fired by mpf BEFORE the 3-D Secure redirect, which is the only moment we are
+  // guaranteed to still be running. Binding the Moyasar payment id to our row
+  // here is what lets the reconciler find the charge if the webhook is dropped.
+  // It MUST NOT throw and MUST NOT block: a failed attach is recoverable, a
+  // member stuck on a spinner with a live charge is not.
+  function attach(token, moyasarId) {
+    return new Promise(function (resolve) {
+      var settled = false;
+      var timer = 0;
+      var finish = function () {
+        if (settled) { return; }
+        settled = true;
+        clearTimeout(timer);
+        resolve();
+      };
+      // Hard ceiling. If the attach hangs, the member still goes to 3-D Secure;
+      // the reconciler will pick the charge up from Moyasar within ten minutes.
+      timer = setTimeout(finish, 6000);
+      try {
+        fetch(FUNCTIONS_BASE + '/payment-attach', {
+          method: 'POST',
+          credentials: 'omit',
+          cache: 'no-store',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ t: token, moyasarId: String(moyasarId || '') })
+        }).then(finish, finish);
+      } catch (e) {
+        finish();
+      }
+    });
+  }
+
+  function mount(token, session) {
+    els.pkgName.textContent = session.packageName || 'اشتراك أكاديمية Golden Talent';
+    if (session.description) {
+      els.pkgDesc.textContent = session.description;
+    } else {
+      els.pkgDesc.hidden = true;
+    }
+    els.amtValue.textContent = formatAmount(session);
+    els.amtCur.textContent = session.currency === 'SAR' ? 'ر.س' : String(session.currency || '');
+    document.title = (session.packageName ? session.packageName + ' — ' : '') + 'إتمام الدفع';
+
+    show(els.ready);
+
+    // Methods and networks come from the server so the academy can switch a
+    // method on the hour Moyasar activates it, without touching this page.
+    // Always sent explicitly — the Moyasar docs disagree with themselves about
+    // what the default method set is.
+    var methods = (session.methods && session.methods.length)
+      ? session.methods.slice()
+      : ['creditcard'];
+    var networks = (session.supportedNetworks && session.supportedNetworks.length)
+      ? session.supportedNetworks
+      : ['mada', 'visa', 'mastercard'];
+
+    // Apple Pay is doubly gated. The server only lists it once the domain is
+    // registered with Moyasar and a sheet label is configured; this second,
+    // client-side check asks the actual browser whether it can pay. Inside
+    // ASWebAuthenticationSession — which is how the app opens this page — that
+    // answer is normally no, and an Apple Pay tile that dead-ends at merchant
+    // validation is worse for a member than never seeing one. Dropping it here
+    // costs nothing: the card form is already the fallback.
+    if (methods.indexOf('applepay') !== -1) {
+      var canApplePay = false;
+      try {
+        canApplePay = !!(window.ApplePaySession
+          && window.ApplePaySession.canMakePayments
+          && window.ApplePaySession.canMakePayments());
+      } catch (e) { canApplePay = false; }
+
+      if (!canApplePay) {
+        methods = methods.filter(function (m) { return m !== 'applepay'; });
+      }
+    }
+
+    var config = {
+      element: '.mysr-form',
+      // From the API, never from the URL — see the file header.
+      amount: session.amountHalalas,
+      currency: 'SAR',
+      description: session.packageName,
+      publishable_api_key: session.publishableKey,
+      callback_url: session.callbackUrl,
+      methods: methods,
+      supported_networks: networks,
+      language: 'ar',
+      metadata: { reference: session.reference },
+      on_completed: function (payment) {
+        return attach(token, payment && payment.id);
+      },
+      on_failure: function (error) {
+        var message = '';
+        if (error && typeof error.message === 'string') { message = error.message; }
+        else if (typeof error === 'string') { message = error; }
+        alertPayment(
+          'لم تكتمل عملية الدفع',
+          message
+            ? 'رفض البنك العملية: ' + message + '. لم يتم خصم أي مبلغ — جرّب بطاقة أخرى.'
+            : 'رفض البنك العملية ولم يتم خصم أي مبلغ. تأكّد من بيانات البطاقة أو جرّب بطاقة أخرى.'
+        );
+      }
+    };
+
+    // Apple Pay needs its own block naming the merchant and where to validate.
+    // Only attached when the tile actually survived both gates above.
+    if (methods.indexOf('applepay') !== -1 && session.applePay) {
+      config.apple_pay = {
+        country: session.applePay.country,
+        label: session.applePay.label,
+        validate_merchant_url: session.applePay.validateMerchantUrl
+      };
+    }
+
+    Moyasar.init(config);
+  }
+
+  function start() {
+    var token = readToken();
+    if (!token) { terminal('unknown'); return; }
+
+    loadSession(token).then(function (session) {
+      if (!session) { return; }          // terminal() already navigated away
+      if (!session.ok || typeof session.amountHalalas !== 'number' || !session.publishableKey) {
+        terminal('unknown');
+        return;
+      }
+      mount(token, session);
+    }).catch(function () {
+      show(els.network);
+    });
+  }
+
+  els.retry.addEventListener('click', start);
+  start();
+})();
+</script>
+</body>
+</html>
