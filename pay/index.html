@@ -155,12 +155,18 @@
     </div>
   </div>
 
-  <!-- 2. the session could not be loaded (network / server down) — retryable -->
+  <!-- 2. the page could not be prepared — retryable.
+       The heading is set from JS: a network failure and a failure to build the
+       form are different faults and must not both claim the member's internet
+       is down. netDetail carries a short machine-readable code — a member does
+       not need it, but it is the difference between diagnosing this from a
+       screenshot and guessing at it. -->
   <div class="card" id="stateNetwork" hidden>
     <div class="state">
-      <h2>تعذّر الاتصال</h2>
-      <p>لم نتمكّن من تحميل بيانات الدفع. تأكّد من اتصالك بالإنترنت ثم أعد المحاولة.</p>
+      <h2 id="netTitle">تعذّر الاتصال</h2>
+      <p id="netBody">لم نتمكّن من تحميل بيانات الدفع. تأكّد من اتصالك بالإنترنت ثم أعد المحاولة.</p>
       <button class="btn btn-primary" id="retryBtn" type="button">إعادة المحاولة</button>
+      <p id="netDetail" class="desc" style="margin-top:14px;font-size:12px;opacity:.55;direction:ltr;font-family:ui-monospace,monospace"></p>
     </div>
   </div>
 
@@ -230,6 +236,9 @@
   var els = {
     loading: document.getElementById('stateLoading'),
     network: document.getElementById('stateNetwork'),
+    netTitle: document.getElementById('netTitle'),
+    netBody: document.getElementById('netBody'),
+    netDetail: document.getElementById('netDetail'),
     ready: document.getElementById('stateReady'),
     retry: document.getElementById('retryBtn'),
     pkgName: document.getElementById('pkgName'),
@@ -423,10 +432,53 @@
         terminal('unknown');
         return;
       }
-      mount(token, session);
-    }).catch(function () {
-      show(els.network);
+      // mount() is wrapped SEPARATELY from the fetch on purpose. Sharing one
+      // catch meant a failure to build the form — a missing Moyasar global, a
+      // rejected config — told the member their internet was down, which sent
+      // everyone looking in the wrong place while the real fault was here.
+      try {
+        if (typeof Moyasar === 'undefined' || !Moyasar || typeof Moyasar.init !== 'function') {
+          throw new Error('moyasar_sdk_unavailable');
+        }
+        mount(token, session);
+      } catch (e) {
+        fail('form', e);
+      }
+    }).catch(function (e) {
+      fail('network', e);
     });
+  }
+
+  /**
+   * Show the retryable failure card, naming what actually broke.
+   *
+   * `kind` separates the two faults the member can act on differently:
+   *   network — the session never loaded; retrying or better signal may fix it
+   *   form    — the session loaded fine but the payment form would not build,
+   *             which retrying will not fix and which we need to hear about
+   * The detail line is deliberately terse and untranslated: it is for a support
+   * screenshot, not for reading. No token, no key, no amount goes into it.
+   */
+  function fail(kind, e) {
+    var message = (e && e.message) ? String(e.message) : 'unknown';
+    if (kind === 'form') {
+      els.netTitle.textContent = 'تعذّر تجهيز صفحة الدفع';
+      els.netBody.textContent =
+        'حدث خطأ أثناء تحضير نموذج الدفع، ولم يتم خصم أي مبلغ. أعد المحاولة، وإن تكرر تواصل مع الأكاديمية.';
+    } else {
+      els.netTitle.textContent = 'تعذّر الاتصال';
+      els.netBody.textContent =
+        'لم نتمكّن من تحميل بيانات الدفع. تأكّد من اتصالك بالإنترنت ثم أعد المحاولة.';
+    }
+    // location.origin is in here because a CORS rejection and a genuine offline
+    // both surface as "Failed to fetch", and the commonest cause of the former
+    // is the page being served from a host that PAYMENT_WEB_BASE_URL does not
+    // name — www vs apex, most often. Chrome hides the "www." prefix in the URL
+    // bar, so the member's screenshot cannot otherwise tell us which host they
+    // are actually on.
+    els.netDetail.textContent = kind + ': ' + message.slice(0, 120) + ' @ ' + location.origin;
+    if (window.console && console.error) { console.error('pay:' + kind, e); }
+    show(els.network);
   }
 
   els.retry.addEventListener('click', start);
