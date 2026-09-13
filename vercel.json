@@ -1,0 +1,52 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" },
+        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=(), payment=(), interest-cohort=()" }
+      ]
+    },
+    {
+      "source": "/pay",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store, no-cache, must-revalidate, max-age=0" },
+        { "key": "Referrer-Policy", "value": "no-referrer" },
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" },
+        { "key": "Content-Security-Policy", "value": "default-src 'self'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'; script-src 'self' https://cdn.moyasar.com 'sha256-azs291Hq+a3xik/mF/WG/TXIO9wTB4w/WQKyWdb2hV0=' 'sha256-cYmJoJS+8wf4TfFL2X3sUz46D4/yDcq2Hievi/wvxC8=' 'sha256-I8r/LEtdcXODNmF8zPPtjeLqrJfeSy5OOiph0VEb4zg='; style-src 'self' 'unsafe-inline' https://cdn.moyasar.com; font-src 'self' data: https://cdn.moyasar.com; img-src 'self' data: https://cdn.moyasar.com; connect-src 'self' https://api.moyasar.com https://cdn.moyasar.com https://xrrxuvyztkmofpdbewwv.supabase.co https://xrrxuvyztkmofpdbewwv.functions.supabase.co; frame-src https:; upgrade-insecure-requests" }
+      ]
+    },
+    {
+      "source": "/pay/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store, no-cache, must-revalidate, max-age=0" },
+        { "key": "Referrer-Policy", "value": "no-referrer" },
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" },
+        { "key": "Content-Security-Policy", "value": "default-src 'self'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'; script-src 'self' https://cdn.moyasar.com 'sha256-azs291Hq+a3xik/mF/WG/TXIO9wTB4w/WQKyWdb2hV0=' 'sha256-cYmJoJS+8wf4TfFL2X3sUz46D4/yDcq2Hievi/wvxC8=' 'sha256-I8r/LEtdcXODNmF8zPPtjeLqrJfeSy5OOiph0VEb4zg='; style-src 'self' 'unsafe-inline' https://cdn.moyasar.com; font-src 'self' data: https://cdn.moyasar.com; img-src 'self' data: https://cdn.moyasar.com; connect-src 'self' https://api.moyasar.com https://cdn.moyasar.com https://xrrxuvyztkmofpdbewwv.supabase.co https://xrrxuvyztkmofpdbewwv.functions.supabase.co; frame-src https:; upgrade-insecure-requests" }
+      ]
+    },
+    {
+      "source": "/.well-known/apple-developer-merchantid-domain-association",
+      "headers": [
+        { "key": "Content-Type", "value": "text/plain; charset=utf-8" },
+        { "key": "Cache-Control", "value": "public, max-age=300" }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/.well-known/apple-developer-merchantid-domain-association",
+      "destination": "/.well-known/apple-developer-merchantid-domain-association.txt"
+    }
+  ]
+}

@@ -1,0 +1,141 @@
+<!doctype html>
+<!--
+  WHY THIS PAGE EXISTS
+  ========================================================================
+  A checkout session is a 30-minute, single-subscription grant. Once it has
+  expired, been consumed, or was never real, index.html has nothing safe left to
+  render: it cannot show an amount (it never learned one) and it must not invite
+  a retry against a token the server has already refused. Rather than leaving a
+  half-loaded card form on screen, index.html navigates here — one terminal
+  state, one place to keep the copy.
+
+  ?r is a UI hint only and is whitelisted against three known values before it is
+  read. Two of them — 'expired' and 'unknown' — say the operationally important
+  thing: NOTHING WAS CHARGED. A member who fears a silent double charge calls the
+  academy; a member who is told plainly does not.
+
+  THE THIRD BRANCH, 'settled', SAYS THE OPPOSITE AND MUST NOT BE MERGED BACK IN.
+  payment-session answers 409 already_processed when the payment behind the token
+  has moved on from 'initiated' — which in practice means it was PAID. Telling a
+  member who has just been charged 400 SAR that nothing was charged, and inviting
+  them to press «اشترك» again, is a double-purchase funnel and precisely the class
+  of false claim this app was rejected twice for by Google Play. So the «لم يتم
+  خصم أي مبلغ» assurance is per-branch copy, never an always-rendered block.
+
+  CSP NOTE: the inline script below is allowlisted in ../vercel.json by its
+  sha256 hash. Regenerate the hash if you edit it.
+-->
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex, nofollow">
+<title>انتهت صلاحية جلسة الدفع — أكاديمية Golden Talent</title>
+<link rel="icon" href="../assets/favicon.png">
+<style>
+  @font-face{ font-family:'Tajawal'; src:url('../assets/fonts/Tajawal-Regular.ttf') format('truetype'); font-weight:400; font-display:swap; }
+  @font-face{ font-family:'Tajawal'; src:url('../assets/fonts/Tajawal-Bold.ttf') format('truetype'); font-weight:700; font-display:swap; }
+  @font-face{ font-family:'Tajawal'; src:url('../assets/fonts/Tajawal-ExtraBold.ttf') format('truetype'); font-weight:800; font-display:swap; }
+
+  :root{
+    --bg:#03141A; --bg-2:#05191f; --surface:#0a2228; --line:#173a41; --line-2:#22525a;
+    --teal:#4FD6C6; --teal-dim:rgba(79,214,198,0.12); --cream:#F6DFBF; --clay:#E68A6A;
+    --ink:#F1FAF8; --ink-2:#9FC2BF; --ink-3:#5f8480; --ink-dark:#03141A;
+    --r:20px; --pill:999px;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ font-family:'Tajawal','SF Pro Display',-apple-system,'Segoe UI',system-ui,sans-serif; background:var(--bg); color:var(--ink); line-height:1.75; -webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(900px 480px at 50% -8%, rgba(79,214,198,0.10), transparent 62%); background-repeat:no-repeat;
+    min-height:100dvh; display:flex; align-items:center; justify-content:center; padding:24px; }
+  img{ max-width:100%; display:block; }
+  a{ color:inherit; text-decoration:none; }
+
+  .card{ background:var(--surface); border:1px solid var(--line); border-radius:var(--r); padding:clamp(26px,6vw,36px); max-width:460px; width:100%; text-align:center; }
+  .brand{ display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:22px; }
+  .brand img{ width:38px; height:38px; object-fit:contain; }
+  .brand b{ font-size:16px; font-weight:800; letter-spacing:-0.01em; }
+
+  .icon{ width:58px; height:58px; margin:0 auto 18px; border-radius:18px; background:var(--teal-dim); border:1px solid rgba(79,214,198,0.3); display:flex; align-items:center; justify-content:center; }
+  .icon svg{ width:27px; height:27px; stroke:var(--teal); stroke-width:1.9; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+
+  h1{ font-size:clamp(21px,4.6vw,25px); font-weight:800; line-height:1.35; letter-spacing:-0.01em; }
+  p{ color:var(--ink-2); font-size:15px; margin-top:12px; }
+
+  .assure{ display:flex; gap:10px; align-items:flex-start; text-align:start; background:rgba(79,214,198,0.07); border:1px solid rgba(79,214,198,0.28); border-radius:14px; padding:13px 15px; margin-top:20px; }
+  .assure svg{ width:18px; height:18px; stroke:var(--teal); stroke-width:2; fill:none; flex:none; margin-top:4px; stroke-linecap:round; stroke-linejoin:round; }
+  .assure span{ font-size:13.5px; color:var(--ink-2); }
+
+  .btn{ display:inline-flex; align-items:center; justify-content:center; gap:9px; width:100%; padding:14px 26px; border-radius:var(--pill); font-weight:700; font-size:15.5px; font-family:inherit; border:1px solid transparent; cursor:pointer; margin-top:22px; transition:transform .18s cubic-bezier(.16,1,.3,1), background .18s; }
+  .btn-primary{ background:var(--teal); color:var(--ink-dark); box-shadow:0 10px 30px -8px rgba(79,214,198,0.5); }
+  .btn-primary:hover{ transform:translateY(-2px); }
+  .foot{ margin-top:18px; color:var(--ink-3); font-size:12.5px; }
+  .foot a{ color:var(--ink-2); border-bottom:1px solid var(--line-2); }
+  .foot a:hover{ color:var(--teal); border-color:var(--teal); }
+  .foot .sep{ opacity:.5; margin-inline:7px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="brand"><img src="../assets/crest.png" alt="Golden Talent"><b>Golden Talent</b></div>
+
+  <div class="icon">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+  </div>
+
+  <h1 id="title">انتهت صلاحية جلسة الدفع</h1>
+  <p id="body">مضى وقت طويل على فتح هذه الصفحة. ارجع إلى التطبيق واضغط «اشترك» من جديد لإنشاء جلسة دفع جديدة.</p>
+
+  <div class="assure">
+    <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+    <span><strong id="assureLead">لم يتم خصم أي مبلغ من بطاقتك.</strong> <span id="assureRest">لا تُخصم أي مبالغ إلا بعد إتمام عملية دفع مؤكّدة.</span></span>
+  </div>
+
+  <a class="btn btn-primary" href="goldentalent://payment-return">العودة إلى التطبيق</a>
+
+  <p class="foot">
+    <a href="/terms">الشروط والأحكام</a>
+    <span class="sep">·</span>
+    <a href="/privacy">سياسة الخصوصية</a>
+    <span class="sep">·</span>
+    <a href="/">الموقع الرئيسي</a>
+  </p>
+</div>
+<script>
+(function () {
+  'use strict';
+  // Whitelisted, never interpolated: ?r selects one of three fixed copy sets,
+  // it is never itself rendered. An unknown value falls back to the safest
+  // branch that is also the most common one.
+  var NOT_CHARGED = ['لم يتم خصم أي مبلغ من بطاقتك.', 'لا تُخصم أي مبالغ إلا بعد إتمام عملية دفع مؤكّدة.'];
+  var COPY = {
+    expired: {
+      title: 'انتهت صلاحية جلسة الدفع',
+      body: 'مضى وقت طويل على فتح هذه الصفحة. ارجع إلى التطبيق واضغط «اشترك» من جديد لإنشاء جلسة دفع جديدة.',
+      assure: NOT_CHARGED
+    },
+    unknown: {
+      title: 'رابط الدفع غير صالح',
+      body: 'هذا الرابط غير معروف أو تم استخدامه من قبل. ارجع إلى التطبيق واضغط «اشترك» لبدء عملية دفع جديدة.',
+      assure: NOT_CHARGED
+    },
+    // The payment behind this link is no longer awaiting payment — most often
+    // because it succeeded. Say nothing about whether a charge happened: this
+    // page does not know, and the member's own app screen does.
+    settled: {
+      title: 'تمّت معالجة هذا الطلب',
+      body: 'رابط الدفع هذا انتهى دوره ولم يعد بحاجة إلى أي إجراء. افتح التطبيق وراجع صفحة «الاشتراكات» لعرض حالة عمليتك.',
+      assure: ['لا تدفع مرة أخرى من هذا الرابط.', 'إن لم تظهر حالة عمليتك في التطبيق خلال بضع دقائق، تواصل مع الأكاديمية.']
+    }
+  };
+  var r = new URLSearchParams(window.location.search).get('r');
+  var copy = Object.prototype.hasOwnProperty.call(COPY, r) ? COPY[r] : COPY.expired;
+  document.getElementById('title').textContent = copy.title;
+  document.getElementById('body').textContent = copy.body;
+  document.getElementById('assureLead').textContent = copy.assure[0];
+  document.getElementById('assureRest').textContent = copy.assure[1];
+  document.title = copy.title + ' — أكاديمية Golden Talent';
+})();
+</script>
+</body>
+</html>
