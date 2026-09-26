@@ -3,11 +3,28 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>أكاديمية Golden Talent - كرة القدم للكبار</title>
-<meta name="description" content="أكاديمية كرة قدم للكبار في السعودية. درّب، سجّل حضورك بمسح الرمز، وتابع تقدّمك. كل عضويتك في تطبيق واحد.">
-<meta property="og:title" content="أكاديمية Golden Talent">
-<meta property="og:description" content="كرة القدم للكبار. عضويتك كاملة في تطبيق واحد.">
+<title>أكاديمية Golden Talent · كرة القدم في جدة</title>
+<meta name="description" content="أكاديمية Golden Talent لكرة القدم في جدة. تدريب احترافي على يد مدرّبين معتمدين، ومجموعات لمختلف الأعمار والمستويات، بأجواء ملعب حقيقية.">
+<meta name="keywords" content="أكاديمية كرة قدم جدة, تدريب كرة قدم جدة, كرة القدم جدة, أكاديمية Golden Talent, football academy Jeddah">
+<meta name="theme-color" content="#03141A">
+<!-- Open Graph -->
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://www.thegoldentalent.com/">
+<meta property="og:site_name" content="Golden Talent">
+<meta property="og:locale" content="ar_SA">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:title" content="أكاديمية Golden Talent · كرة القدم في جدة">
+<meta property="og:description" content="تدريب كرة قدم احترافي في جدة لمختلف الأعمار والمستويات.">
+<meta property="og:image" content="https://www.thegoldentalent.com/assets/og-cover.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="أكاديمية Golden Talent · كرة القدم في جدة">
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="أكاديمية Golden Talent · كرة القدم في جدة">
+<meta name="twitter:description" content="تدريب كرة قدم احترافي في جدة لمختلف الأعمار والمستويات.">
+<meta name="twitter:image" content="https://www.thegoldentalent.com/assets/og-cover.jpg">
+<link rel="canonical" href="https://www.thegoldentalent.com/">
 <link rel="icon" href="./assets/favicon.png">
 <script>document.documentElement.className += ' js';</script>
 <style>
@@ -61,7 +78,19 @@
   .nav-right{ display:flex; align-items:center; gap:12px; }
   .lang{ border:1px solid var(--line-2); background:transparent; color:var(--ink-2); border-radius:var(--pill); padding:9px 15px; font-weight:800; font-size:13px; cursor:pointer; font-family:inherit; transition:.15s; }
   .lang:hover{ color:var(--teal); border-color:var(--teal); }
-  @media(max-width:900px){ .nav-links{ display:none; } .nav-right .btn{ display:none; } }
+  .menu-btn{ display:none; width:42px; height:42px; border-radius:50%; border:1px solid var(--line-2); background:transparent; color:var(--ink); cursor:pointer; align-items:center; justify-content:center; }
+  .menu-btn svg{ width:20px; height:20px; stroke:currentColor; stroke-width:2; fill:none; stroke-linecap:round; }
+  .menu-btn .x{ display:none; }
+  header.nav.open .menu-btn .x{ display:block; } header.nav.open .menu-btn .bars{ display:none; }
+  @media(max-width:900px){
+    .nav-right .btn{ display:none; }
+    .menu-btn{ display:inline-flex; }
+    .nav-links{ display:none; position:absolute; top:100%; inset-inline:0; flex-direction:column; align-items:stretch; gap:0; padding:8px 20px 18px; background:var(--bg); border-bottom:1px solid var(--line); }
+    header.nav.open .nav-links{ display:flex; }
+    .nav-links a{ padding:15px 4px; font-size:17px; border-bottom:1px solid var(--line); }
+    .nav-links a:last-child{ border-bottom:0; }
+  }
+  @media(max-width:380px){ .brand b{ font-size:16px; } .brand img{ width:36px; height:36px; } }
 
   /* ============ HERO — asymmetric, product-forward ============ */
   .hero{ position:relative; overflow:hidden; }
@@ -93,9 +122,9 @@
   .band .s{ padding:34px 24px; text-align:center; border-inline-start:1px solid var(--line); }
   .band .s:first-child{ border-inline-start:0; }
   .band .s b{ display:block; font-size:clamp(30px,3.6vw,44px); font-weight:800; line-height:1; letter-spacing:-0.02em; }
-  .band .s b .u{ color:var(--teal); }
+  .band .s b .u{ color:var(--teal); display:inline; margin:0; font-size:inherit; line-height:inherit; }
   .band .s span{ display:block; margin-top:9px; color:var(--ink-3); font-size:13.5px; }
-  @media(max-width:720px){ .band-grid{ grid-template-columns:repeat(2,1fr); } .band .s:nth-child(3){ border-inline-start:0; } .band .s{ border-top:1px solid var(--line); } .band .s:nth-child(-n+2){ border-top:0; } }
+  @media(max-width:720px){ .band-grid{ grid-template-columns:repeat(2,1fr); } .band .s:nth-child(3){ border-inline-start:0; } .band .s{ border-top:1px solid var(--line); } .band .s:nth-child(-n+2){ border-top:0; } .band .s{ padding:26px 12px; } .band .s span{ font-size:13px; line-height:1.6; } }
 
   /* section shell */
   .sec{ padding-block:clamp(60px,10vw,132px); position:relative; }
@@ -138,8 +167,14 @@
   @media(max-width:540px){ .app-shots{ min-height:400px; } .app-shots .ph.l,.app-shots .ph.r{ display:none; } .app-shots .ph.c{ width:min(230px,64%); } }
 
   /* ============ PACKAGES ============ */
-  .pkgs{ display:grid; grid-template-columns:1.35fr 1fr; gap:22px; }
-  .pkg{ background:var(--surface); border:1px solid var(--line); border-radius:var(--r); padding:34px; position:relative; overflow:hidden; }
+  .pkgs{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+  .pkg{ background:var(--surface); border:1px solid var(--line); border-radius:var(--r); padding:34px; position:relative; overflow:hidden; display:flex; flex-direction:column; align-items:flex-start; }
+  .pkg ul{ align-self:stretch; }
+  .pkg > ul:not(:last-child){ margin-bottom:26px; }
+  .pkg > .btn{ margin-top:auto; position:relative; }
+  .pkg.wide{ grid-column:1 / -1; }
+  .pkg .sub{ margin-top:6px; color:var(--ink-3); font-size:14.5px; }
+  .pkgs-note{ margin-top:22px; font-size:13.5px; color:var(--ink-3); text-align:center; }
   .pkg.feat{ border-color:rgba(79,214,198,0.45); background:linear-gradient(155deg,rgba(79,214,198,0.10),var(--surface) 55%); }
   .pkg.feat::after{ content:""; position:absolute; top:-40%; inset-inline-end:-20%; width:340px; height:340px; border-radius:50%; background:radial-gradient(circle,rgba(79,214,198,0.14),transparent 60%); }
   .pkg .tag{ display:inline-block; font-size:12px; font-weight:800; color:var(--teal); background:var(--teal-dim); border:1px solid rgba(79,214,198,0.3); border-radius:999px; padding:5px 13px; }
@@ -151,7 +186,7 @@
   .pkg li{ display:flex; gap:10px; align-items:center; color:var(--ink-2); font-size:15px; }
   .pkg li svg{ width:19px; height:19px; stroke:var(--teal); stroke-width:2.2; fill:none; flex:none; }
   .pkg .note{ margin-top:22px; font-size:13.5px; color:var(--ink-3); line-height:1.7; }
-  @media(max-width:820px){ .pkgs{ grid-template-columns:1fr; } }
+  @media(max-width:980px){ .pkgs{ grid-template-columns:1fr; } }
 
   /* ============ GALLERY ============ */
   .gal{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
@@ -192,6 +227,8 @@
   .ft-logo b{ font-size:19px; font-weight:800; letter-spacing:-0.01em; }
   .ft-tag{ color:var(--ink-3); font-size:14px; margin-top:14px; line-height:1.85; max-width:34ch; }
   .ft-social{ display:flex; gap:11px; margin-top:24px; }
+  .ft-phone{ display:inline-block; margin-top:16px; color:var(--ink-2); font-size:15px; font-weight:700; letter-spacing:0.02em; }
+  .ft-phone:hover{ color:var(--teal); }
   .soc{ width:44px; height:44px; border-radius:13px; border:1px solid var(--line-2); background:rgba(255,255,255,0.03); color:var(--ink-2);
     display:flex; align-items:center; justify-content:center; transition:transform .24s cubic-bezier(.16,1,.3,1), background .2s, border-color .2s, color .2s, box-shadow .2s; }
   .soc:hover{ transform:translateY(-5px); color:var(--teal); border-color:var(--teal); background:var(--teal-dim); box-shadow:0 12px 26px -8px rgba(79,214,198,0.55); }
@@ -210,6 +247,8 @@
   .ft-badge svg{ width:25px; height:25px; flex:none; }
   .ft-badge .tx{ text-align:start; line-height:1.15; }
   .ft-badge small{ display:block; font-size:10px; color:var(--ink-3); letter-spacing:0; text-transform:none; }
+  .ft-badge[aria-disabled]{ cursor:default; }
+  .ft-badge[aria-disabled]:hover{ transform:none; box-shadow:none; }
   .ft-badge b{ font-size:15px; font-weight:800; letter-spacing:0; text-transform:none; color:var(--ink); }
   /* giant shimmering brand wordmark */
   .ft-word{ margin-top:48px; text-align:center; line-height:.9; pointer-events:none; user-select:none; }
@@ -242,7 +281,7 @@
 <header class="nav">
   <div class="wrap nav-inner">
     <a class="brand" href="#top"><img src="./assets/crest.png" alt="Golden Talent"><b>Golden Talent</b></a>
-    <nav class="nav-links">
+    <nav class="nav-links" id="navLinks">
       <a href="#why" data-ar="لماذا نحن" data-en="Why us">لماذا نحن</a>
       <a href="#app" data-ar="التطبيق" data-en="The app">التطبيق</a>
       <a href="#packages" data-ar="الباقات" data-en="Packages">الباقات</a>
@@ -250,6 +289,7 @@
     </nav>
     <div class="nav-right">
       <button class="lang" id="lang" aria-label="Switch language">EN</button>
+      <button class="menu-btn" id="menuBtn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="navLinks"><svg class="bars" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg><svg class="x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
       <a class="btn btn-primary" href="#app" data-ar="حمّل التطبيق" data-en="Get the app">حمّل التطبيق</a>
     </div>
   </div>
@@ -261,11 +301,11 @@
     <div class="bg"></div><div class="scrim"></div>
     <div class="wrap hero-grid">
       <div class="hero-copy">
-        <span class="chip"><span class="dot"></span><span data-ar="أكاديمية كرة قدم للكبار · السعودية" data-en="Adult football academy · Saudi Arabia">أكاديمية كرة قدم للكبار · السعودية</span></span>
-        <h1 class="display"><span data-ar="تمرّن. سجّل حضورك." data-en="Train. Check in.">تمرّن. سجّل حضورك.</span><br><span class="accent" data-ar="تصدّر الملعب." data-en="Lead the board.">تصدّر الملعب.</span></h1>
-        <p class="lead" data-ar="أكاديمية Golden Talent لكرة القدم. تدير عضويتك كاملة من تطبيق واحد: رصيد حصصك، حجزك، حضورك، ولوحة ترتيب زملائك." data-en="Golden Talent Academy. Your whole membership in one app: your sessions, bookings, check-in, and the squad leaderboard.">أكاديمية Golden Talent لكرة القدم. تدير عضويتك كاملة من تطبيق واحد: رصيد حصصك، حجزك، حضورك، ولوحة ترتيب زملائك.</p>
+        <span class="chip"><span class="dot"></span><span data-ar="أكاديمية كرة قدم · جدة" data-en="Football academy · Jeddah">أكاديمية كرة قدم · جدة</span></span>
+        <h1 class="display"><span data-ar="تمرّن. تطوّر." data-en="Train. Improve.">تمرّن. تطوّر.</span><br><span class="accent" data-ar="تصدّر الملعب." data-en="Own the pitch.">تصدّر الملعب.</span></h1>
+        <p class="lead" data-ar="أكاديمية Golden Talent لكرة القدم في جدة. تدريب احترافي على يد مدرّبين معتمدين، واستقطاب لمختلف الأعمار والمستويات، بأجواء كروية حقيقية." data-en="Golden Talent Football Academy in Jeddah. Professional training with certified coaches, open to all ages and levels, in a real football atmosphere.">أكاديمية Golden Talent لكرة القدم في جدة. تدريب احترافي على يد مدرّبين معتمدين، واستقطاب لمختلف الأعمار والمستويات، بأجواء كروية حقيقية.</p>
         <div class="cta">
-          <a class="btn btn-primary" href="#app" data-ar="حمّل التطبيق وسجّل" data-en="Get the app">حمّل التطبيق وسجّل</a>
+          <a class="btn btn-primary" href="#app" data-ar="سجّل الآن" data-en="Sign up now">سجّل الآن</a>
           <a class="btn btn-ghost" href="#packages" data-ar="تصفّح الباقات" data-en="See packages">تصفّح الباقات</a>
         </div>
         <p class="avail" data-ar="متوفر قريباً على iOS و Android." data-en="Coming soon to iOS and Android.">متوفر قريباً على iOS و Android.</p>
@@ -283,10 +323,10 @@
   <!-- STATS BAND -->
   <section class="band">
     <div class="wrap band-grid">
-      <div class="s"><b>10<span class="u">+2</span></b><span data-ar="حصص شهرياً + هدية" data-en="Sessions / month + bonus">حصص شهرياً + هدية</span></div>
-      <div class="s"><b data-ar="ثانية" data-en="1-tap">ثانية</b><span data-ar="لتسجيل الحضور" data-en="To check in">لتسجيل الحضور</span></div>
-      <div class="s"><b>7</b><span data-ar="أيام تجميد متاحة" data-en="Freeze days available">أيام تجميد متاحة</span></div>
-      <div class="s"><b>60<span class="u" style="font-size:0.55em"> ر.س</span></b><span data-ar="حصة يومية بلا التزام" data-en="Day pass, no commitment">حصة يومية بلا التزام</span></div>
+      <div class="s"><b dir="ltr">25<span class="u">–65</span></b><span data-ar="سنة · مجموعات منسجمة ومستويات مبهرة" data-en="Years old · well-matched groups, impressive levels">سنة · مجموعات منسجمة ومستويات مبهرة</span></div>
+      <div class="s"><b><span class="u" style="font-size:0.55em;display:inline;margin:0;color:var(--teal)" data-ar="حتى " data-en="Up to ">حتى </span>6</b><span data-ar="حصص إضافية (تطبق شروط الباقات)" data-en="bonus sessions (package terms apply)">حصص إضافية (تطبق شروط الباقات)</span></div>
+      <div class="s"><b>6</b><span data-ar="أيام تجميد متاحة (حسب الباقة)" data-en="Freeze days (depends on package)">أيام تجميد متاحة (حسب الباقة)</span></div>
+      <div class="s"><b>60<span class="u" style="font-size:0.55em" data-ar=" ريال" data-en=" SAR"> ريال</span></b><span data-ar="حصة يومية بلا التزام" data-en="Day pass, no commitment">حصة يومية بلا التزام</span></div>
     </div>
   </section>
 
@@ -294,29 +334,29 @@
   <section class="sec" id="why">
     <div class="wrap">
       <div class="sec-head reveal">
-        <span class="eyebrow" data-ar="لماذا Golden Talent" data-en="Why Golden Talent">لماذا Golden Talent</span>
-        <h2 class="display" data-ar="تدريب حقيقي، بأدوات العصر." data-en="Real training, modern tools.">تدريب حقيقي، بأدوات العصر.</h2>
-        <p class="lead" data-ar="لسنا مجرد ملعب. نظام متكامل يدير عضويتك ويحفّزك على الاستمرار." data-en="Not just a pitch. A complete system that runs your membership and keeps you coming back.">لسنا مجرد ملعب. نظام متكامل يدير عضويتك ويحفّزك على الاستمرار.</p>
+        <span class="eyebrow" data-ar="لماذا نحن" data-en="Why us">لماذا نحن</span>
+        <h2 class="display" data-ar="تدريب كرة قدم، بمعايير احترافية." data-en="Football training, to professional standards.">تدريب كرة قدم، بمعايير احترافية.</h2>
+        <p class="lead" data-ar="بيئة تدريب منظّمة تناسب كل لاعب، من أول خطوة إلى إتقان المهارة." data-en="An organized training environment for every player, from the first step to mastering the skill.">بيئة تدريب منظّمة تناسب كل لاعب، من أول خطوة إلى إتقان المهارة.</p>
       </div>
       <div class="feat-list">
         <div class="frow reveal">
-          <span class="ic"><svg class="i" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M9 9h.01M15 9h.01M9 15h6"/></svg></span>
-          <div class="txt"><h3 data-ar="حضور بمسح الرمز" data-en="Scan-to-check-in">حضور بمسح الرمز</h3><p data-ar="امسح رمز الملعب فيُسجَّل حضورك ويُخصم من رصيد حصصك تلقائياً. لا أوراق، لا انتظار عند البوابة." data-en="Scan the pitch code; attendance is logged and a session is deducted automatically. No paper, no waiting at the gate.">امسح رمز الملعب فيُسجَّل حضورك ويُخصم من رصيد حصصك تلقائياً. لا أوراق، لا انتظار عند البوابة.</p></div>
+          <span class="ic"><svg class="i" viewBox="0 0 24 24"><path d="M12 3l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 8.7l5.4-.8z"/></svg></span>
+          <div class="txt"><h3 data-ar="تدريب احترافي" data-en="Professional coaching">تدريب احترافي</h3><p data-ar="مدرّبون معتمدون بتصنيف وزارة الرياضة، وحصص مجدولة متنوعة تسهم في رفع اللياقة والارتقاء بالمستوى الكروي بسهولة." data-en="Coaches certified under the Ministry of Sport classification, and a varied session schedule that builds your fitness and lifts your game.">مدرّبون معتمدون بتصنيف وزارة الرياضة، وحصص مجدولة متنوعة تسهم في رفع اللياقة والارتقاء بالمستوى الكروي بسهولة.</p></div>
           <span class="num">01</span>
         </div>
         <div class="frow reveal">
-          <span class="ic"><svg class="i" viewBox="0 0 24 24"><path d="M12 3l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 8.7l5.4-.8z"/></svg></span>
-          <div class="txt"><h3 data-ar="تدريب احترافي" data-en="Pro coaching">تدريب احترافي</h3><p data-ar="مدرّبون معتمدون، مجموعات منظّمة، وحصص بجدول واضح تحجز مقعدك فيها من التطبيق." data-en="Certified coaches, organized groups, and scheduled sessions you book a spot in from the app.">مدرّبون معتمدون، مجموعات منظّمة، وحصص بجدول واضح تحجز مقعدك فيها من التطبيق.</p></div>
+          <span class="ic"><svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.6-3 2.8-5 5.5-5s4.9 2 5.5 5"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14.2c2.3.2 4 1.9 4.5 4.8"/></svg></span>
+          <div class="txt"><h3 data-ar="لمختلف الأعمار والمستويات" data-en="All ages and levels">لمختلف الأعمار والمستويات</h3><p data-ar="برامج تناسب المبتدئ والمتقدّم، بمجموعات متناغمة ومتجانسة ليتطوّر كل لاعب في مكانه الصحيح." data-en="Programs for beginners and advanced players alike, in well-matched groups so every player develops in the right place.">برامج تناسب المبتدئ والمتقدّم، بمجموعات متناغمة ومتجانسة ليتطوّر كل لاعب في مكانه الصحيح.</p></div>
           <span class="num">02</span>
         </div>
         <div class="frow reveal">
           <span class="ic"><svg class="i" viewBox="0 0 24 24"><path d="M4 19V5m0 14h16M8 15l3-4 3 2 5-7"/></svg></span>
-          <div class="txt"><h3 data-ar="تابع تقدّمك وتصدّر" data-en="Track progress, top the board">تابع تقدّمك وتصدّر</h3><p data-ar="سلسلة حضورك، إنجازاتك، ولوحة ترتيب يقيّمك فيها زملاؤك بعد كل مباراة. تحفيز حقيقي." data-en="Your attendance streak, achievements, and a leaderboard your teammates score after every match. Real motivation.">سلسلة حضورك، إنجازاتك، ولوحة ترتيب يقيّمك فيها زملاؤك بعد كل مباراة. تحفيز حقيقي.</p></div>
+          <div class="txt"><h3 data-ar="تابع تقدّمك" data-en="Track your progress">تابع تقدّمك</h3><p data-ar="سلسلة حضورك وإنجازاتك، ولوحة ترتيب يقيّمك فيها زملاؤك بعد كل مباراة. تقييم دوري من المدرّبين يعمل على تحفيز حقيقي على الاستمرار." data-en="Your attendance streak and achievements, and a leaderboard where your teammates rate you after every match. Regular coach evaluations give you real motivation to keep going.">سلسلة حضورك وإنجازاتك، ولوحة ترتيب يقيّمك فيها زملاؤك بعد كل مباراة. تقييم دوري من المدرّبين يعمل على تحفيز حقيقي على الاستمرار.</p></div>
           <span class="num">03</span>
         </div>
         <div class="frow reveal">
           <span class="ic"><svg class="i" viewBox="0 0 24 24"><path d="M8 3v18M16 3v18M8 8h8M8 14h8"/></svg></span>
-          <div class="txt"><h3 data-ar="باقات مرنة وتجميد" data-en="Flexible plans & freeze">باقات مرنة وتجميد</h3><p data-ar="اشتراك شهري بحصص هدية، مع تجميد الاشتراك عند السفر أو الانشغال دون خسارة رصيدك." data-en="A monthly plan with bonus sessions, plus freeze while travelling or busy without losing your balance.">اشتراك شهري بحصص هدية، مع تجميد الاشتراك عند السفر أو الانشغال دون خسارة رصيدك.</p></div>
+          <div class="txt"><h3 data-ar="باقات مرنة وتجميد" data-en="Flexible plans & freeze">باقات مرنة وتجميد</h3><p data-ar="اشتراك شهري بحصص إضافية، مع إمكانية تجميد الاشتراك عند السفر أو الانشغال دون خسارة رصيدك." data-en="A monthly plan with bonus sessions, and you can freeze it while travelling or busy without losing your balance.">اشتراك شهري بحصص إضافية، مع إمكانية تجميد الاشتراك عند السفر أو الانشغال دون خسارة رصيدك.</p></div>
           <span class="num">04</span>
         </div>
       </div>
@@ -332,9 +372,9 @@
         <div class="ph c"><img src="./assets/app/01-home.jpg" alt=""></div>
       </div>
       <div class="app-copy reveal">
-        <span class="eyebrow" data-ar="تطبيق العضو" data-en="The member app">تطبيق العضو</span>
-        <h2 class="display" data-ar="عضويتك كلها في جيبك." data-en="Your whole membership, in your pocket.">عضويتك كلها في جيبك.</h2>
-        <p class="lead" data-ar="سجّل مرة، وأدِر كل شيء: رصيد حصصك، الحجز، الحضور، التجميد، وتقييم زملائك." data-en="Register once, then manage everything: sessions, booking, check-in, freeze, and rating teammates.">سجّل مرة، وأدِر كل شيء: رصيد حصصك، الحجز، الحضور، التجميد، وتقييم زملائك.</p>
+        <span class="eyebrow" data-ar="التطبيق" data-en="The app">التطبيق</span>
+        <h2 class="display" data-ar="تطبيق يرافق تمرينك." data-en="An app that trains with you.">تطبيق يرافق تمرينك.</h2>
+        <p class="lead" data-ar="أداة تسهّل عليك المتابعة: احجز حصتك، سجّل حضورك بمسح الرمز، وتابع تقدّمك ورصيد حصصك." data-en="A tool that makes it easy to keep up: book your session, check in by scanning the code, and follow your progress and session balance.">أداة تسهّل عليك المتابعة: احجز حصتك، سجّل حضورك بمسح الرمز، وتابع تقدّمك ورصيد حصصك.</p>
         <div class="feat"><div class="d"><svg class="i" viewBox="0 0 24 24" style="width:18px;height:18px"><path d="M20 6L9 17l-5-5"/></svg></div><div><b data-ar="تسجيل ودخول بالجوال" data-en="Phone sign-in">تسجيل ودخول بالجوال</b><p data-ar="حساب برقم جوالك، ودخول ببصمة الوجه." data-en="An account with your phone, and Face ID login.">حساب برقم جوالك، ودخول ببصمة الوجه.</p></div></div>
         <div class="feat"><div class="d"><svg class="i" viewBox="0 0 24 24" style="width:18px;height:18px"><path d="M20 6L9 17l-5-5"/></svg></div><div><b data-ar="رصيد حصصك لحظياً" data-en="Live session balance">رصيد حصصك لحظياً</b><p data-ar="كم باقٍ لك، ومتى ينتهي اشتراكك." data-en="What's left, and when your plan ends.">كم باقٍ لك، ومتى ينتهي اشتراكك.</p></div></div>
         <div class="feat"><div class="d"><svg class="i" viewBox="0 0 24 24" style="width:18px;height:18px"><path d="M20 6L9 17l-5-5"/></svg></div><div><b data-ar="لوحة ترتيب الزملاء" data-en="Peer leaderboard">لوحة ترتيب الزملاء</b><p data-ar="قيّم من لعب معك، وشوف من يتصدّر." data-en="Rate who played with you, see who leads.">قيّم من لعب معك، وشوف من يتصدّر.</p></div></div>
@@ -354,29 +394,51 @@
         <h2 class="display" data-ar="اختر ما يناسبك، وسجّل من التطبيق." data-en="Pick your plan, sign up in the app.">اختر ما يناسبك، وسجّل من التطبيق.</h2>
       </div>
       <div class="pkgs">
-        <div class="pkg feat reveal">
-          <span class="tag" data-ar="الأكثر اختياراً" data-en="Most popular">الأكثر اختياراً</span>
+        <div class="pkg reveal">
           <h3 data-ar="الباقة الشهرية" data-en="Monthly plan">الباقة الشهرية</h3>
-          <div class="price"><b>400</b><span data-ar="ريال / شهر" data-en="SAR / month">ريال / شهر</span></div>
+          <div class="price"><b>420</b><span data-ar="ريال / شهر" data-en="SAR / month">ريال / شهر</span></div>
           <ul>
             <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span data-ar="8 حصص + حصتان هدية" data-en="8 sessions + 2 bonus">8 حصص + حصتان هدية</span></li>
             <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span data-ar="حجز وحضور من التطبيق" data-en="Book & check in from the app">حجز وحضور من التطبيق</span></li>
-            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span data-ar="تجميد حتى 7 أيام" data-en="Freeze up to 7 days">تجميد حتى 7 أيام</span></li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span data-ar="تجميد حتى يومين" data-en="Freeze up to 2 days">تجميد حتى يومين</span></li>
             <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span data-ar="لوحة الترتيب والإنجازات" data-en="Leaderboard & achievements">لوحة الترتيب والإنجازات</span></li>
           </ul>
-          <a class="btn btn-primary" href="#app" style="margin-top:26px" data-ar="سجّل من التطبيق" data-en="Sign up in the app">سجّل من التطبيق</a>
+          <a class="btn btn-primary" href="#app" data-ar="سجّل من التطبيق" data-en="Sign up in the app">سجّل من التطبيق</a>
+        </div>
+        <div class="pkg feat reveal">
+          <span class="tag" data-ar="الأكثر اختياراً" data-en="Most popular">الأكثر اختياراً</span>
+          <h3 data-ar="باقة 3 شهور" data-en="3-month plan">باقة 3 شهور</h3>
+          <div class="price"><b>900</b><span data-ar="ريال" data-en="SAR">ريال</span></div>
+          <ul>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span data-ar="24 حصة + 4 حصص هدية" data-en="24 sessions + 4 bonus">24 حصة + 4 حصص هدية</span></li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span data-ar="حجز وحضور من التطبيق" data-en="Book & check in from the app">حجز وحضور من التطبيق</span></li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span data-ar="تجميد حتى 4 أيام" data-en="Freeze up to 4 days">تجميد حتى 4 أيام</span></li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span data-ar="لوحة الترتيب والإنجازات" data-en="Leaderboard & achievements">لوحة الترتيب والإنجازات</span></li>
+          </ul>
+          <a class="btn btn-primary" href="#app" data-ar="سجّل من التطبيق" data-en="Sign up in the app">سجّل من التطبيق</a>
         </div>
         <div class="pkg reveal">
-          <span class="tag" data-ar="جرّب مرة" data-en="Try once">جرّب مرة</span>
+          <h3 data-ar="باقة 6 شهور" data-en="6-month plan">باقة 6 شهور</h3>
+          <div class="price"><b>1,750</b><span data-ar="ريال" data-en="SAR">ريال</span></div>
+          <ul>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span data-ar="48 حصة + 6 حصص هدية" data-en="48 sessions + 6 bonus">48 حصة + 6 حصص هدية</span></li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span data-ar="حجز وحضور من التطبيق" data-en="Book & check in from the app">حجز وحضور من التطبيق</span></li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span data-ar="تجميد حتى 6 أيام" data-en="Freeze up to 6 days">تجميد حتى 6 أيام</span></li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span data-ar="لوحة الترتيب والإنجازات" data-en="Leaderboard & achievements">لوحة الترتيب والإنجازات</span></li>
+          </ul>
+          <a class="btn btn-primary" href="#app" data-ar="سجّل من التطبيق" data-en="Sign up in the app">سجّل من التطبيق</a>
+        </div>
+        <div class="pkg wide reveal">
           <h3 data-ar="حصة يومية" data-en="Day pass">حصة يومية</h3>
+          <p class="sub" data-ar="وقتك غير مرن والتزاماتك أو سفرياتك كثيرة؟" data-en="Tight schedule, lots of commitments or travel?">وقتك غير مرن والتزاماتك أو سفرياتك كثيرة؟</p>
           <div class="price"><b>60</b><span data-ar="ريال / حصة" data-en="SAR / session">ريال / حصة</span></div>
           <ul>
             <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span data-ar="حصة تدريب واحدة" data-en="A single session">حصة تدريب واحدة</span></li>
             <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span data-ar="بدون التزام شهري" data-en="No monthly commitment">بدون التزام شهري</span></li>
           </ul>
-          <p class="note" data-ar="التفعيل والدفع يتمّان بأمان من داخل التطبيق." data-en="Activation and payment happen securely inside the app.">التفعيل والدفع يتمّان بأمان من داخل التطبيق.</p>
         </div>
       </div>
+      <p class="pkgs-note reveal" data-ar="التفعيل والدفع يتمّان بأمان من داخل التطبيق." data-en="Activation and payment happen securely inside the app.">التفعيل والدفع يتمّان بأمان من داخل التطبيق.</p>
     </div>
   </section>
 
@@ -385,11 +447,11 @@
     <div class="wrap">
       <div class="sec-head reveal" style="margin-bottom:34px"><h2 class="display" style="font-size:clamp(26px,3.6vw,38px)" data-ar="من أرض الملعب" data-en="From the pitch">من أرض الملعب</h2></div>
       <div class="gal reveal">
-        <a href="#"><img src="./assets/photos/stadium-night.jpg" alt=""></a>
-        <a href="#"><img src="./assets/photos/ball-grass.jpg" alt=""></a>
-        <a href="#"><img src="./assets/photos/kick.jpg" alt=""></a>
-        <a href="#"><img src="./assets/photos/stadium-day.jpg" alt=""></a>
-        <a href="#"><img src="./assets/photos/ball-foot.jpg" alt=""></a>
+        <a href="https://www.instagram.com/gt_academy.sa/" target="_blank" rel="noopener" aria-label="Instagram"><img src="./assets/photos/stadium-night.jpg" alt=""></a>
+        <a href="https://www.instagram.com/gt_academy.sa/" target="_blank" rel="noopener" aria-label="Instagram"><img src="./assets/photos/ball-grass.jpg" alt=""></a>
+        <a href="https://www.instagram.com/gt_academy.sa/" target="_blank" rel="noopener" aria-label="Instagram"><img src="./assets/photos/kick.jpg" alt=""></a>
+        <a href="https://www.instagram.com/gt_academy.sa/" target="_blank" rel="noopener" aria-label="Instagram"><img src="./assets/photos/stadium-day.jpg" alt=""></a>
+        <a href="https://www.instagram.com/gt_academy.sa/" target="_blank" rel="noopener" aria-label="Instagram"><img src="./assets/photos/ball-foot.jpg" alt=""></a>
       </div>
     </div>
   </section>
@@ -399,9 +461,9 @@
     <div class="wrap">
       <div class="sec-head reveal" style="margin-bottom:34px"><h2 class="display" style="font-size:clamp(26px,3.6vw,38px)" data-ar="ماذا يقول اللاعبون" data-en="What players say">ماذا يقول اللاعبون</h2></div>
       <div class="quotes">
-        <div class="quote reveal"><div class="qm">”</div><p data-ar="أخيراً بطّلت أسأل كم باقٍ لي حصص. كل شي واضح بالتطبيق، والحضور صار بمسح واحد." data-en="I finally stopped asking how many sessions I have left. Everything is clear in the app, and check-in is one scan.">أخيراً بطّلت أسأل كم باقٍ لي حصص. كل شي واضح بالتطبيق، والحضور صار بمسح واحد.</p><div class="who"><span class="av">فـ</span><div><b data-ar="فيصل الشمري" data-en="Faisal Al-Shammari">فيصل الشمري</b><span data-ar="عضو منذ 2025" data-en="Member since 2025">عضو منذ 2025</span></div></div></div>
-        <div class="quote reveal"><div class="qm">”</div><p data-ar="لوحة الترتيب سوّت أجواء حماسية بيننا. صرنا نحضر أكثر عشان نتصدّر." data-en="The leaderboard created real energy between us. We show up more just to top it.">لوحة الترتيب سوّت أجواء حماسية بيننا. صرنا نحضر أكثر عشان نتصدّر.</p><div class="who"><span class="av">نـ</span><div><b data-ar="ناصر العتيبي" data-en="Nasser Al-Otaibi">ناصر العتيبي</b><span data-ar="عضو" data-en="Member">عضو</span></div></div></div>
-        <div class="quote reveal"><div class="qm">”</div><p data-ar="التجميد أنقذني وقت السفر. رجعت ورصيدي كما هو بالضبط." data-en="Freeze saved me while travelling. I came back and my balance was exactly as I left it.">التجميد أنقذني وقت السفر. رجعت ورصيدي كما هو بالضبط.</p><div class="who"><span class="av">خـ</span><div><b data-ar="خالد الزهراني" data-en="Khalid Al-Zahrani">خالد الزهراني</b><span data-ar="عضو" data-en="Member">عضو</span></div></div></div>
+        <div class="quote reveal"><div class="qm">”</div><p data-ar="المدرّبون على مستوى عالٍ، والمجموعات مقسّمة حسب المستوى فتحسّن أدائي من أول شهر. أخيراً أكاديمية تاخذ كرة القدم بجدّية." data-en="The coaches are top level, and groups are split by level, so my game improved from the first month. Finally, an academy that takes football seriously.">المدرّبون على مستوى عالٍ، والمجموعات مقسّمة حسب المستوى فتحسّن أدائي من أول شهر. أخيراً أكاديمية تاخذ كرة القدم بجدّية.</p><div class="who"><span class="av" data-ar="فـ" data-en="F">فـ</span><div><b data-ar="فيصل الشمري" data-en="Faisal Al-Shammari">فيصل الشمري</b><span data-ar="عضو منذ 2025" data-en="Member since 2025">عضو منذ 2025</span></div></div></div>
+        <div class="quote reveal"><div class="qm">”</div><p data-ar="لوحة الترتيب سوّت أجواء حماسية بيننا. صرنا نحضر أكثر عشان نتصدّر." data-en="The leaderboard created real energy between us. We show up more just to top it.">لوحة الترتيب سوّت أجواء حماسية بيننا. صرنا نحضر أكثر عشان نتصدّر.</p><div class="who"><span class="av" data-ar="نـ" data-en="N">نـ</span><div><b data-ar="ناصر العتيبي" data-en="Nasser Al-Otaibi">ناصر العتيبي</b><span data-ar="عضو" data-en="Member">عضو</span></div></div></div>
+        <div class="quote reveal"><div class="qm">”</div><p data-ar="التجميد أنقذني وقت السفر. رجعت ورصيدي كما هو بالضبط." data-en="Freeze saved me while travelling. I came back and my balance was exactly as I left it.">التجميد أنقذني وقت السفر. رجعت ورصيدي كما هو بالضبط.</p><div class="who"><span class="av" data-ar="خـ" data-en="K">خـ</span><div><b data-ar="خالد الزهراني" data-en="Khalid Al-Zahrani">خالد الزهراني</b><span data-ar="عضو" data-en="Member">عضو</span></div></div></div>
       </div>
     </div>
   </section>
@@ -425,13 +487,14 @@
     <div class="ft-top">
       <div class="ft-brand">
         <div class="ft-logo"><img src="./assets/crest.png" alt="Golden Talent"><b>Golden Talent</b></div>
-        <p class="ft-tag" data-ar="أكاديمية كرة قدم للكبار في السعودية. عضويتك كاملة في تطبيق واحد." data-en="An adult football academy in Saudi Arabia. Your whole membership in one app.">أكاديمية كرة قدم للكبار في السعودية. عضويتك كاملة في تطبيق واحد.</p>
+        <p class="ft-tag" data-ar="أكاديمية Golden Talent لكرة القدم في جدة. تدريب احترافي لمختلف الأعمار والمستويات." data-en="Golden Talent Football Academy in Jeddah. Professional training for all ages and levels.">أكاديمية Golden Talent لكرة القدم في جدة. تدريب احترافي لمختلف الأعمار والمستويات.</p>
         <div class="ft-social">
-          <a class="soc" href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5.2"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.2" cy="6.8" r="1.15" fill="currentColor" stroke="none"/></svg></a>
-          <a class="soc" href="#" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"><path d="M15 4c.4 2.5 2 4.1 4.6 4.3v3c-1.8 0-3.4-.5-4.6-1.4V15a5.4 5.4 0 1 1-5.4-5.4c.3 0 .6 0 .9.1v3.1a2.4 2.4 0 1 0 1.7 2.3V4z"/></svg></a>
-          <a class="soc" href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 3h3.1l-6.8 7.8L21.8 21h-6.2l-4.9-6.4L5.1 21H2l7.3-8.3L2.3 3h6.3l4.4 5.8L17.5 3zm-1.1 16h1.7L7.7 4.8H5.9L16.4 19z"/></svg></a>
-          <a class="soc" href="#" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"><path d="M12 3a8.5 8.5 0 0 0-7.3 12.9L3.5 21l5.3-1.2A8.5 8.5 0 1 0 12 3z"/><path d="M8.8 8.2c.2-.5.4-.5.7-.5h.5c.2 0 .4 0 .6.5l.7 1.6c.1.2 0 .4-.1.6l-.4.5c-.2.2-.3.4-.1.7.3.5.8 1.2 1.5 1.7.6.5 1.1.7 1.4.8.2.1.4 0 .6-.1l.5-.6c.2-.2.3-.2.6-.1l1.5.7c.3.2.3.3.3.6 0 .4-.5 1.2-1.4 1.4-.8.2-1.9.1-3.6-.9-2-1.1-3.3-3.2-3.4-3.4-.1-.2-.8-1.1-.8-2.1 0-1 .5-1.5.7-1.7z"/></svg></a>
+          <a class="soc" href="https://www.instagram.com/gt_academy.sa/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5.2"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.2" cy="6.8" r="1.15" fill="currentColor" stroke="none"/></svg></a>
+          <a class="soc" href="https://www.tiktok.com/@gt_academy.sa" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"><path d="M15 4c.4 2.5 2 4.1 4.6 4.3v3c-1.8 0-3.4-.5-4.6-1.4V15a5.4 5.4 0 1 1-5.4-5.4c.3 0 .6 0 .9.1v3.1a2.4 2.4 0 1 0 1.7 2.3V4z"/></svg></a>
+          <a class="soc" href="tel:+966546117412" aria-label="Call +966 54 611 7412"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"><path d="M5 4h3.5l1.7 4.3-2.2 1.4a11 11 0 0 0 6.3 6.3l1.4-2.2L20 15.5V19a1.5 1.5 0 0 1-1.6 1.5A16.5 16.5 0 0 1 3.5 5.6 1.5 1.5 0 0 1 5 4z"/></svg></a>
+          <a class="soc" href="https://wa.me/966546117412" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"><path d="M12 3a8.5 8.5 0 0 0-7.3 12.9L3.5 21l5.3-1.2A8.5 8.5 0 1 0 12 3z"/><path d="M8.8 8.2c.2-.5.4-.5.7-.5h.5c.2 0 .4 0 .6.5l.7 1.6c.1.2 0 .4-.1.6l-.4.5c-.2.2-.3.4-.1.7.3.5.8 1.2 1.5 1.7.6.5 1.1.7 1.4.8.2.1.4 0 .6-.1l.5-.6c.2-.2.3-.2.6-.1l1.5.7c.3.2.3.3.3.6 0 .4-.5 1.2-1.4 1.4-.8.2-1.9.1-3.6-.9-2-1.1-3.3-3.2-3.4-3.4-.1-.2-.8-1.1-.8-2.1 0-1 .5-1.5.7-1.7z"/></svg></a>
         </div>
+        <a class="ft-phone" href="tel:+966546117412" dir="ltr">+966 54 611 7412</a>
       </div>
       <div class="ft-links">
         <div class="col"><b data-ar="الأكاديمية" data-en="Academy">الأكاديمية</b>
@@ -446,8 +509,8 @@
         </div>
         <div class="col"><b data-ar="حمّل التطبيق" data-en="Get the app">حمّل التطبيق</b>
           <div class="ft-badges">
-            <a class="ft-badge" href="#"><svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--teal)"><path d="M16.4 12.9a3.5 3.5 0 0 1 1.7-3 3.6 3.6 0 0 0-2.9-1.5c-1.2-.1-2.4.7-3 .7-.6 0-1.6-.7-2.6-.7-1.4 0-2.6.8-3.3 2-1.4 2.4-.4 6 1 8 .6.9 1.4 2 2.4 1.9 1-.04 1.3-.6 2.5-.6 1.1 0 1.5.6 2.5.6 1 0 1.7-.9 2.3-1.9a8 8 0 0 0 1-2.2 3.4 3.4 0 0 1-1.9-3.3zM14.6 6.9c.6-.7.9-1.6.8-2.6-.9 0-1.9.6-2.5 1.3-.5.6-1 1.5-.8 2.5.9.1 1.9-.5 2.5-1.2z"/></svg><div class="tx"><small data-ar="حمّله من" data-en="Get it on">حمّله من</small><b>App Store</b></div></a>
-            <a class="ft-badge" href="#"><svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--teal)"><path d="M3 3v18l9-9zm11 7l3.5-2-11-6zm0 4l-7.5 8 11-6zm1.5-2L21 12l-3-1.7-2.5 2z"/></svg><div class="tx"><small data-ar="حمّله من" data-en="Get it on">حمّله من</small><b>Google Play</b></div></a>
+            <span class="ft-badge" aria-disabled="true"><svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--teal)"><path d="M16.4 12.9a3.5 3.5 0 0 1 1.7-3 3.6 3.6 0 0 0-2.9-1.5c-1.2-.1-2.4.7-3 .7-.6 0-1.6-.7-2.6-.7-1.4 0-2.6.8-3.3 2-1.4 2.4-.4 6 1 8 .6.9 1.4 2 2.4 1.9 1-.04 1.3-.6 2.5-.6 1.1 0 1.5.6 2.5.6 1 0 1.7-.9 2.3-1.9a8 8 0 0 0 1-2.2 3.4 3.4 0 0 1-1.9-3.3zM14.6 6.9c.6-.7.9-1.6.8-2.6-.9 0-1.9.6-2.5 1.3-.5.6-1 1.5-.8 2.5.9.1 1.9-.5 2.5-1.2z"/></svg><div class="tx"><small data-ar="قريباً على" data-en="Coming soon on">قريباً على</small><b>App Store</b></div></span>
+            <span class="ft-badge" aria-disabled="true"><svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--teal)"><path d="M3 3v18l9-9zm11 7l3.5-2-11-6zm0 4l-7.5 8 11-6zm1.5-2L21 12l-3-1.7-2.5 2z"/></svg><div class="tx"><small data-ar="قريباً على" data-en="Coming soon on">قريباً على</small><b>Google Play</b></div></span>
           </div>
         </div>
       </div>
@@ -477,6 +540,7 @@
         else el.textContent=v;
       });
       btn.textContent = l==='ar' ? 'EN' : 'ع';
+      document.title = l==='ar' ? 'أكاديمية Golden Talent · كرة القدم في جدة' : 'Golden Talent Football Academy · Jeddah';
       try{ localStorage.setItem('gt_lang',l); }catch(e){}
     }
     var saved='ar'; try{ saved=localStorage.getItem('gt_lang')||'ar'; }catch(e){}
@@ -493,6 +557,13 @@
         var r=el.getBoundingClientRect(); if(r.top < window.innerHeight*1.1){ el.classList.add('in'); }
       });
     },600); });
+  })();
+  (function(){
+    var nav=document.querySelector('header.nav'), b=document.getElementById('menuBtn');
+    function set(open){ nav.classList.toggle('open',open); b.setAttribute('aria-expanded',open?'true':'false'); }
+    b.addEventListener('click',function(){ set(!nav.classList.contains('open')); });
+    document.querySelectorAll('#navLinks a').forEach(function(a){ a.addEventListener('click',function(){ set(false); }); });
+    document.addEventListener('keydown',function(e){ if(e.key==='Escape') set(false); });
   })();
   document.getElementById('yr').textContent=new Date().getFullYear();
   (function(){ var t=document.getElementById('toTop'); if(t) t.addEventListener('click',function(){ window.scrollTo({top:0,behavior:'smooth'}); }); })();
