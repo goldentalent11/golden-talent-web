@@ -273,6 +273,39 @@
   html.js .reveal{ opacity:0; transform:translateY(30px); }
   html.js .reveal.in{ opacity:1; transform:none; }
   @media(prefers-reduced-motion:reduce){ html.js .reveal{ opacity:1; transform:none; transition:none; } html{ scroll-behavior:auto; } }
+
+  /* ============ mobile polish ============ */
+  /* anchor jumps land below the sticky header */
+  html{ scroll-padding-top:84px; }
+  /* testimonial avatar: the generic ".who span" rule was shrinking and
+     de-centring the initial */
+  .quote .who .av{ display:flex; font-size:18px; margin-top:0; flex:none; color:var(--teal); font-weight:800; }
+  @media(max-width:900px){
+    /* the centre phone sizes the block, so it can't spill over the badges */
+    .app-shots{ min-height:0; padding-block:28px 8px; }
+    .app-shots .ph.c{ position:relative; }
+  }
+  @media(max-width:640px){
+    .frow{ grid-template-columns:1fr; gap:14px; }
+    .frow .ic{ width:46px; height:46px; }
+    .pkg{ padding:26px 22px; }
+    .pkg .price b{ font-size:46px; }
+    .pkg > .btn{ align-self:stretch; }
+    .ft-links .col > a{ padding-block:6px; margin-bottom:4px; }
+    .ft-phone{ padding-block:6px; }
+    .float{ padding:8px 11px; gap:8px; }
+    .float b{ font-size:12px; } .float small{ font-size:10px; }
+    .float .tick{ width:24px; height:24px; }
+    .float.a{ inset-inline-start:-4%; }
+    .float.b{ inset-inline-end:-2%; }
+  }
+  @media(max-width:540px){
+    /* equal-width, stacked store badges instead of a ragged pair */
+    .stores{ display:grid; grid-template-columns:1fr; max-width:320px; }
+    .cta-final .stores{ margin-inline:auto; }
+    .store{ justify-content:flex-start; }
+    .store .soon{ margin-inline-start:auto; }
+  }
 </style>
 </head>
 <body>
@@ -519,12 +552,11 @@
     <div class="ft-word" aria-hidden="true"><span>GOLDEN TALENT</span></div>
 
     <div class="ft-bottom">
-      <span data-ar="© Golden Talent · جميع الحقوق محفوظة." data-en="© Golden Talent. All rights reserved.">© Golden Talent · جميع الحقوق محفوظة.</span>
+      <span>© <span id="yr"></span> <span data-ar="Golden Talent · جميع الحقوق محفوظة." data-en="Golden Talent. All rights reserved.">Golden Talent · جميع الحقوق محفوظة.</span></span>
       <button class="to-top" id="toTop" type="button" aria-label="Back to top">
         <span data-ar="للأعلى" data-en="Back to top">للأعلى</span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
       </button>
-      <span id="yr"></span>
     </div>
   </div>
 </footer>
